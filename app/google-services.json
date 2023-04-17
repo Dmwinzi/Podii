@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "641833437055",
+    "project_id": "podii-90481",
+    "storage_bucket": "podii-90481.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641833437055:android:31b37ddbd34d575d06fc4a",
+        "android_client_info": {
+          "package_name": "com.example.podii"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "641833437055-iqe4gue0ffpc175991lk0ss4ckruul00.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5LkrlLwt9CuEKbd00Ki4AW1dZSnbN-fU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "641833437055-iqe4gue0ffpc175991lk0ss4ckruul00.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
