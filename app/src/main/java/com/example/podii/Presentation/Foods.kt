@@ -54,6 +54,8 @@ fun Foods(viewModel: Mainviewmodel,navController: NavHostController){
         var LifecycleEventObserver  = LifecycleEventObserver {_, event ->
             if (event == Lifecycle.Event.ON_START){
                 showtitle = true
+            } else{
+                showtitle = true
             }
         }
         lifecycleOwner.lifecycle.addObserver(LifecycleEventObserver)
