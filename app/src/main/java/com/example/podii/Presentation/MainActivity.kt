@@ -51,7 +51,7 @@ fun Navigate(viewModel: Mainviewmodel){
         }
 
         composable(Screens.Foodinfo.route){
-              Foodinfo()
+              Foodinfo(navController)
         }
 
         composable(Screens.Upload.route){

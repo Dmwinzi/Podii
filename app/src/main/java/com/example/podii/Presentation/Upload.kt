@@ -83,7 +83,7 @@ fun Upload(viewModel: Mainviewmodel){
    
         Spacer(modifier = Modifier.height(20.dp))
         
-      Card(shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp), modifier = Modifier.fillMaxSize(),backgroundColor = Color.White) {
+      Card(shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp), modifier = Modifier.fillMaxSize()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.height(50.dp))
             AsyncImage(model = ImageRequest.Builder(context).data(imageuri).build(),
@@ -96,11 +96,11 @@ fun Upload(viewModel: Mainviewmodel){
                     .width(100.dp)
                     .height(100.dp))
             Spacer(modifier = Modifier.height(30.dp))
-            OutlinedTextField(value = name, onValueChange ={name = it}, label = { Text(text = "Meal name")})
+            OutlinedTextField(value = name, modifier = Modifier.width(300.dp),onValueChange ={name = it}, label = { Text(text = "Meal name")})
             Spacer(modifier = Modifier.height(30.dp))
-            OutlinedTextField(value = author, onValueChange ={author = it}, label = { Text(text = "author")})
+            OutlinedTextField(value = author, modifier = Modifier.width(300.dp),onValueChange ={author = it}, label = { Text(text = "author")})
             Spacer(modifier = Modifier.height(30.dp))
-            OutlinedTextField(value = description, modifier = Modifier.width(300.dp) ,onValueChange ={description = it}, maxLines = 1,label = { Text(text = "Meal description")})
+            OutlinedTextField(value = description, modifier = Modifier.width(300.dp) ,onValueChange ={description = it},label = { Text(text = "Meal description")})
             Spacer(modifier = Modifier.height(30.dp))
             Circularprogress(isloading = isloading)
             Spacer(modifier = Modifier.height(30.dp))
@@ -129,7 +129,7 @@ fun Upload(viewModel: Mainviewmodel){
             }, colors =  ButtonDefaults.buttonColors(Color("#D14D72".toColorInt())), modifier = Modifier.width(150.dp),shape = RoundedCornerShape(10.dp) ) {
                 Text(text = "Upload", style = TextStyle(color = Color.White),fontFamily = MaterialTheme.typography.button.fontFamily)
             }
-            
+            Spacer(modifier = Modifier.height(40.dp))
         }
       }
         

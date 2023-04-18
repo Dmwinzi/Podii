@@ -2,6 +2,7 @@ package com.example.podii.Presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -49,6 +50,11 @@ fun Foods(viewModel: Mainviewmodel,navController: NavHostController){
         }
     }
     var lifecycleOwner  = LocalLifecycleOwner.current
+
+    var listsize  = filteredfoods.size
+    var leftlist = filteredfoods.subList(0,listsize/2)
+    var rightlist = filteredfoods.subList(listsize/2,listsize)
+
 
     DisposableEffect(key1 = lifecycleOwner){
         var LifecycleEventObserver  = LifecycleEventObserver {_, event ->
@@ -107,41 +113,187 @@ fun Foods(viewModel: Mainviewmodel,navController: NavHostController){
          Icon(painter = painterResource(id = R.drawable.baseline_add_24), contentDescription = null , tint = Color.White)
       }}
   ) {
-      LazyColumn(modifier = Modifier.padding(it)){
-          item { 
-              Column(modifier = Modifier.fillMaxWidth()) {
-               Text(text = "WELCOME,",modifier = Modifier.padding(start = 15.dp, top = 15.dp),style = TextStyle(fontFamily = MaterialTheme.typography.body1.fontFamily, fontSize = 25.sp))
-               Text(text = "Find your favourite meal today",
-                   modifier = Modifier.padding(start = 15.dp),style = TextStyle(fontFamily = MaterialTheme.typography.body1.fontFamily, fontSize = 20.sp), color = Color.Gray)
+      var windowinfo  = rememberwindowinfo()
+      if (windowinfo.screenWidthinfo is Windowinfo.Windowtype.Compact){
+          LazyColumn(modifier = Modifier.padding(it)){
+              item {
+                  Column(modifier = Modifier.fillMaxWidth()) {
+                      Text(text = "WELCOME,",modifier = Modifier.padding(start = 15.dp, top = 15.dp),style = TextStyle(fontFamily = MaterialTheme.typography.body1.fontFamily, fontSize = 25.sp))
+                      Text(text = "Find your favourite meal today",
+                          modifier = Modifier.padding(start = 15.dp),style = TextStyle(fontFamily = MaterialTheme.typography.body1.fontFamily, fontSize = 20.sp), color = Color.Gray)
+                  }
+              }
+
+              items(filteredfoods){item ->
+                  Row(modifier = Modifier.fillMaxWidth().clickable(onClick = {
+                      var foodParcelable  = FoodParcelable(item.image,item.name,item.description,item.author,item.likes)
+                      navController.currentBackStackEntry?.savedStateHandle?.set(
+                          "foodinfo",
+                          foodParcelable
+                      )
+                      navController.navigate(Screens.Foodinfo.route)
+                  })
+                  ) {
+                      Card(modifier = Modifier
+                          .padding(10.dp)
+                          .fillMaxWidth()
+                          .height(90.dp), shape = RoundedCornerShape(10.dp)) {
+                          Row(modifier = Modifier.padding(start = 15.dp, top = 10.dp)) {
+                              AsyncImage(model = ImageRequest.Builder(context).data(item.image).build(), contentDescription = null,
+                                  error = painterResource(id = R.drawable.food),
+                                  contentScale = ContentScale.Crop,
+                                  modifier = Modifier
+                                      .clip(CircleShape)
+                                      .width(60.dp)
+                                      .height(60.dp)
+                              )
+                              Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier.padding(start = 20.dp, end = 10.dp)) {
+                                  Text(text = item.name, fontFamily = MaterialTheme.typography.body1.fontFamily, fontSize = 25.sp)
+                                  Spacer(modifier = Modifier.height(5.dp))
+                                  Text(text = item.author, style = TextStyle(fontFamily = MaterialTheme.typography.body1.fontFamily, fontStyle = FontStyle.Italic))
+                              }
+
+                          }
+                      }
+                  }
+              }
+
+          }
+      } else if (windowinfo.screenWidthinfo is Windowinfo.Windowtype.Medium){
+          LazyColumn(modifier = Modifier.padding(it)){
+              item {
+                  Column(modifier = Modifier.fillMaxWidth()) {
+                      Text(text = "WELCOME,",modifier = Modifier.padding(start = 15.dp, top = 15.dp),style = TextStyle(fontFamily = MaterialTheme.typography.body1.fontFamily, fontSize = 25.sp))
+                      Text(text = "Find your favourite meal today",
+                          modifier = Modifier.padding(start = 15.dp),style = TextStyle(fontFamily = MaterialTheme.typography.body1.fontFamily, fontSize = 20.sp), color = Color.Gray)
+                  }
+              }
+
+              items(filteredfoods){item ->
+                  Row(modifier = Modifier.fillMaxWidth().clickable(onClick = {
+                      var foodParcelable  = FoodParcelable(item.image,item.name,item.description,item.author,item.likes)
+                      navController.currentBackStackEntry?.savedStateHandle?.set(
+                          "foodinfo",
+                          foodParcelable
+                      )
+                      navController.navigate(Screens.Foodinfo.route)
+                  })) {
+                      Card(modifier = Modifier
+                          .padding(10.dp)
+                          .fillMaxWidth()
+                          .height(90.dp), shape = RoundedCornerShape(10.dp)) {
+                          Row(modifier = Modifier.padding(start = 15.dp, top = 10.dp)) {
+                              AsyncImage(model = ImageRequest.Builder(context).data(item.image).build(), contentDescription = null,
+                                  error = painterResource(id = R.drawable.food),
+                                  contentScale = ContentScale.Crop,
+                                  modifier = Modifier
+                                      .clip(CircleShape)
+                                      .width(60.dp)
+                                      .height(60.dp)
+                              )
+                              Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier.padding(start = 20.dp, end = 10.dp)) {
+                                  Text(text = item.name, fontFamily = MaterialTheme.typography.body1.fontFamily, fontSize = 25.sp)
+                                  Spacer(modifier = Modifier.height(5.dp))
+                                  Text(text = item.author, style = TextStyle(fontFamily = MaterialTheme.typography.body1.fontFamily, fontStyle = FontStyle.Italic))
+                              }
+
+                          }
+                      }
+                  }
+              }
+
+          }
+      } else  {
+          Column(modifier = Modifier.fillMaxSize()) {
+                  Column(modifier = Modifier.fillMaxWidth()) {
+                      Text(
+                          text = "WELCOME,",
+                          modifier = Modifier.padding(start = 15.dp, top = 15.dp),
+                          style = TextStyle(
+                              fontFamily = MaterialTheme.typography.body1.fontFamily,
+                              fontSize = 25.sp
+                          )
+                      )
+                      Text(
+                          text = "Find your favourite meal today",
+                          modifier = Modifier.padding(start = 15.dp),
+                          style = TextStyle(
+                              fontFamily = MaterialTheme.typography.body1.fontFamily,
+                              fontSize = 20.sp
+                          ),
+                          color = Color.Gray
+                      )
+                  }
+              Row() {
+                  LazyColumn(modifier = Modifier.fillMaxHeight()){
+                      items(leftlist){ item ->
+                          Row(modifier = Modifier.fillMaxWidth()
+                              .clickable(onClick = {
+                                  var foodParcelable  = FoodParcelable(item.image,item.name,item.description,item.author,item.likes)
+                                  navController.currentBackStackEntry?.savedStateHandle?.set(
+                                      "foodinfo",
+                                      foodParcelable
+                                  )
+                                  navController.navigate(Screens.Foodinfo.route)
+                              })
+                          ) {
+                              Card(modifier = Modifier
+                                  .padding(10.dp)
+                                  .fillMaxWidth()
+                                  .height(90.dp), shape = RoundedCornerShape(10.dp)) {
+                                  Row(modifier = Modifier.padding(start = 15.dp, top = 10.dp)) {
+                                      AsyncImage(model = ImageRequest.Builder(context).data(item.image).build(), contentDescription = null,
+                                          error = painterResource(id = R.drawable.food),
+                                          contentScale = ContentScale.Crop,
+                                          modifier = Modifier
+                                              .clip(CircleShape)
+                                              .width(60.dp)
+                                              .height(60.dp)
+                                      )
+                                      Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier.padding(start = 20.dp, end = 10.dp)) {
+                                          Text(text = item.name, fontFamily = MaterialTheme.typography.body1.fontFamily, fontSize = 25.sp)
+                                          Spacer(modifier = Modifier.height(5.dp))
+                                          Text(text = item.author, style = TextStyle(fontFamily = MaterialTheme.typography.body1.fontFamily, fontStyle = FontStyle.Italic))
+                                      }
+
+                                  }
+                              }
+                          }
+                   }
+                  }
+              }
+              Row() {
+                  LazyColumn(){
+                        items(rightlist){item ->
+                            Row(modifier = Modifier.fillMaxWidth()) {
+                                Card(modifier = Modifier
+                                    .padding(10.dp)
+                                    .fillMaxWidth()
+                                    .height(90.dp), shape = RoundedCornerShape(10.dp)) {
+                                    Row(modifier = Modifier.padding(start = 15.dp, top = 10.dp)) {
+                                        AsyncImage(model = ImageRequest.Builder(context).data(item.image).build(), contentDescription = null,
+                                            error = painterResource(id = R.drawable.food),
+                                            contentScale = ContentScale.Crop,
+                                            modifier = Modifier
+                                                .clip(CircleShape)
+                                                .width(60.dp)
+                                                .height(60.dp)
+                                        )
+                                        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier.padding(start = 20.dp, end = 10.dp)) {
+                                            Text(text = item.name, fontFamily = MaterialTheme.typography.body1.fontFamily, fontSize = 25.sp)
+                                            Spacer(modifier = Modifier.height(5.dp))
+                                            Text(text = item.author, style = TextStyle(fontFamily = MaterialTheme.typography.body1.fontFamily, fontStyle = FontStyle.Italic))
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                  }
               }
           }
-
-          items(filteredfoods){item ->
-             Row(modifier = Modifier.fillMaxWidth()) {
-                 Card(modifier = Modifier
-                     .padding(10.dp)
-                     .fillMaxWidth().height(90.dp), shape = RoundedCornerShape(10.dp)) {
-                     Row(modifier = Modifier.padding(start = 15.dp, top = 10.dp)) {
-                         AsyncImage(model = ImageRequest.Builder(context).data(item.image).build(), contentDescription = null,
-                             error = painterResource(id = R.drawable.food),
-                             contentScale = ContentScale.Crop,
-                             modifier = Modifier
-                                 .clip(CircleShape)
-                                 .width(60.dp)
-                                 .height(60.dp)
-                         )
-                         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier.padding(start = 20.dp, end = 10.dp)) {
-                             Text(text = item.name, fontFamily = MaterialTheme.typography.body1.fontFamily, fontSize = 25.sp)
-                             Spacer(modifier = Modifier.height(5.dp))
-                             Text(text = item.author, style = TextStyle(fontFamily = MaterialTheme.typography.body1.fontFamily, fontStyle = FontStyle.Italic))
-                         }
-
-                     }
-                 }
-             }
-          }
-          
       }
+
   }
 
 
